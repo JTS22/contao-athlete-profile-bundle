@@ -13,5 +13,5 @@
 /**
  * Backend modules
  */
-$GLOBALS['TL_LANG']['MOD']['athlete_profiles'] = ['Athletenprofile', 'Verwaltung der Athletenprofile'];
+$GLOBALS['TL_LANG']['MOD']['athlete_profiles'] = ['Athlete Profiles', 'Manage athlete profiles'];
 

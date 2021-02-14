@@ -13,7 +13,7 @@
 /**
  * Content element
  */
-$GLOBALS['TL_LANG']['CTE']['athlete_profile_list_element'] = ['Athletenprofil-Liste', 'Liste aller Athletenprofile'];
+$GLOBALS['TL_LANG']['CTE']['athlete_profile_list_element'] = ['Athlete profile list', 'List of all profiles'];
 
 /**
  * Miscelaneous
