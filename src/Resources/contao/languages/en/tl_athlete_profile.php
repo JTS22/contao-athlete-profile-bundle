@@ -11,36 +11,10 @@
  */
 
 /**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_athlete_profile']['first_legend'] = "Basis Einstellungen";
-$GLOBALS['TL_LANG']['tl_athlete_profile']['second_legend'] = "Erweiterte Einstellungen";
-
-/**
  * Operations
  */
-$GLOBALS['TL_LANG']['tl_athlete_profile']['edit'] = ["Datensatz mit ID: %s bearbeiten", "Datensatz mit ID: %s bearbeiten"];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['copy'] = ["Datensatz mit ID: %s kopieren", "Datensatz mit ID: %s kopieren"];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['delete'] = ["Datensatz mit ID: %s löschen", "Datensatz mit ID: %s löschen"];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['show'] = ["Datensatz mit ID: %s ansehen", "Datensatz mit ID: %s ansehen"];
+$GLOBALS['TL_LANG']['tl_athlete_profile']['edit'] = ["Edit item with ID %s", "Edit item with ID %s"];
+$GLOBALS['TL_LANG']['tl_athlete_profile']['copy'] = ["Copy item with ID %s", "Copy item with ID %s"];
+$GLOBALS['TL_LANG']['tl_athlete_profile']['delete'] = ["Delete item with ID %s", "Delete item with ID %s"];
+$GLOBALS['TL_LANG']['tl_athlete_profile']['show'] = ["View item with ID %s", "View item with ID %s"];
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_athlete_profile']['title'] = ["Name", "Geben Sie einen Namen ein"];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['selectField'] = ["Select Feld", "Wählen Sie aus."];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['checkboxField'] = ["Chosen Feld", "Wählen Sie aus."];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['multitextField'] = ["Multitext Feld", "Geben Sie die Werte ein"];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['addSubpalette'] = ["Erweiterte Einstellungen aktivieren", "Hier können Sie die erweiterten Einstellungen aktivieren."];
-$GLOBALS['TL_LANG']['tl_athlete_profile']['textareaField'] = ["Textarea", "Geben Sie einen Text ein"];
-
-/**
- * References
- */
-$GLOBALS['TL_LANG']['tl_athlete_profile']['firstoption'] = "Erste Option";
-$GLOBALS['TL_LANG']['tl_athlete_profile']['secondoption'] = "Zweite Option";
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_athlete_profile']['customButton'] = "Custom Routine starten";
