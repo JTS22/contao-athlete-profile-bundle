@@ -1,0 +1,21 @@
+services:
+
+    # Contao frontend module Jts22\ContaoAthleteProfileBundle\Controller\FrontendModule\TestModuleController
+    Jts22\ContaoAthleteProfileBundle\Controller\FrontendModule\TestModuleController:
+        arguments:
+            - '@session'
+        tags:
+            - { name: contao.frontend_module, category: text, template: mod_test_module, type: test_module }
+            - { name: container.service_subscriber }
+        public: true
+
+    # Contao content element Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController
+    Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController:
+        tags:
+            - { name: contao.content_element, category: text, template: ce_athlete_profile_list_element, type: athlete_profile_list_element }
+            - { name: container.service_subscriber }
+        public: true
+
+
+
+

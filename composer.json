@@ -1,0 +1,53 @@
+{
+    "name": "jts22/contao-athlete-profile-bundle",
+    "description": "Simple bundle providing a dca for storing athlete profiles",
+    "keywords": [
+        "contao",
+        "bundle",
+        "tag 3",
+        "tag 4"
+    ],
+    "type": "contao-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "JTS",
+            "email": "website@tlv-germania.de",
+            "homepage": "https://github.com/JTS22",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/jts22/contao-athlete-profile-bundle/issues",
+        "source": "https://github.com/jts22/contao-athlete-profile-bundle"
+    },
+    "require": {
+        "contao/core-bundle": "^4.9"
+    },
+    "require-dev": {
+        "contao/easy-coding-standard": "^3.0",
+        "contao/manager-plugin": "^2.3",
+        "contao/test-case": "^4.0",
+        "phpunit/phpunit": "^8.4",
+        "symfony/http-client": "4.4.*",
+        "symfony/phpunit-bridge": "4.4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jts22\\ContaoAthleteProfileBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config",
+            "src/Resources/contao/dca",
+            "src/Resources/contao/languages",
+            "src/Resources/contao/templates"
+        ]
+    },
+    "extra": {
+        "contao-manager-plugin": "Jts22\\ContaoAthleteProfileBundle\\ContaoManager\\Plugin"
+    },
+    "version": ""
+}
