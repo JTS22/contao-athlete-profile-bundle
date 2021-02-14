@@ -31,7 +31,7 @@ class AthleteProfileListElementController extends AbstractContentElementControll
     protected function getResponse(Template $template, ContentModel $model, Request $request): ?Response
     {
         $template->text = $model->text;
-        //TEST!!!!
+        
         return $template->getResponse();
     }
 }

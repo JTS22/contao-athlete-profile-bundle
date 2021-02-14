@@ -49,5 +49,5 @@
     "extra": {
         "contao-manager-plugin": "Jts22\\ContaoAthleteProfileBundle\\ContaoManager\\Plugin"
     },
-    "version": ""
+    "version": "dev-master"
 }

@@ -15,7 +15,3 @@
  */
 $GLOBALS['TL_LANG']['MOD']['athlete_profiles'] = ['Athletenprofile', 'Verwaltung der Athletenprofile'];
 
-/**
-* Frontend modules
-*/
-$GLOBALS['TL_LANG']['FMD']['test_module'] = ['bas', 'dafsdf'];

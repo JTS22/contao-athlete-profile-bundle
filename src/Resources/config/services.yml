@@ -1,14 +1,5 @@
 services:
 
-    # Contao frontend module Jts22\ContaoAthleteProfileBundle\Controller\FrontendModule\TestModuleController
-    Jts22\ContaoAthleteProfileBundle\Controller\FrontendModule\TestModuleController:
-        arguments:
-            - '@session'
-        tags:
-            - { name: contao.frontend_module, category: text, template: mod_test_module, type: test_module }
-            - { name: container.service_subscriber }
-        public: true
-
     # Contao content element Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController
     Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController:
         tags:
