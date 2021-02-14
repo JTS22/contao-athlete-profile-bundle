@@ -3,7 +3,7 @@ services:
     # Contao content element Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController
     Jts22\ContaoAthleteProfileBundle\Controller\ContentElement\AthleteProfileListElementController:
         tags:
-            - { name: contao.content_element, category: text, template: ce_athlete_profile_list_element, type: athlete_profile_list_element }
+            - { name: contao.content_element, category: texts, template: ce_athlete_profile_list_element }
             - { name: container.service_subscriber }
         public: true
 
