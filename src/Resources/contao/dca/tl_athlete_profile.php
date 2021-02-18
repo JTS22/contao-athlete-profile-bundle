@@ -11,9 +11,15 @@
  */
 
 use Contao\Backend;
-use Contao\DC_Table;
 use Contao\Input;
 use Contao\Config;
+use Contao\Image;
+use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\DataContainer;
+use Contao\Versions;
+use Contao\BackendUser;
+use Contao\StringUtil;
+use Jts22\ContaoAthleteProfileBundle\Model\AthleteProfileModel;
 
 /**
  * Table tl_athlete_profile
@@ -67,6 +73,11 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
             ),
+			'toggle' => array(
+				'icon'                => 'visible.svg',
+				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+				'button_callback'     => array('tl_athlete_profile', 'toggleIcon')
+			),
             'show'   => array(
                 'label'      => &$GLOBALS['TL_LANG']['tl_athlete_profile']['show'],
                 'href'       => 'act=show',
@@ -77,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
     ),
     // Palettes
     'palettes'    => array(
-        'default'      => '{test_legend},name,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
+        'default'      => '{profile_legend},name,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
     ),
     // Fields
     'fields'      => array(
@@ -162,6 +173,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'sql'       => 'text NOT NULL'
         ),
         'published'     => array(
+            'exclude'   => true,
 			'filter'    => true,
 			'inputType' => 'checkbox',
 			'eval'      => array('doNotCopy'=>true),
@@ -176,4 +188,171 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
 class tl_athlete_profile extends Backend
 {
 
+    /**
+	 * Import the back end user object
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->import(BackendUser::class, 'User');
+	}
+
+    /**
+	 * Disable/enable a user group
+	 *
+	 * @param integer       $intId
+	 * @param boolean       $blnVisible
+	 * @param DataContainer $dc
+	 *
+	 * @throws AccessDeniedException
+	 */
+	public function toggleVisibility($intId, $blnVisible, DataContainer $dc=null)
+	{
+		// Set the ID and action
+		Input::setGet('id', $intId);
+		Input::setGet('act', 'toggle');
+
+		if ($dc)
+		{
+			$dc->id = $intId; // see #8043
+		}
+
+		// Trigger the onload_callback
+		// if (is_array($GLOBALS['TL_DCA']['tl_athlete_profile']['config']['onload_callback'] ?? null))
+		// {
+		// 	foreach ($GLOBALS['TL_DCA']['tl_athlete_profile']['config']['onload_callback'] as $callback)
+		// 	{
+		// 		if (is_array($callback))
+		// 		{
+		// 			$this->import($callback[0]);
+		// 			$this->{$callback[0]}->{$callback[1]}($dc);
+		// 		}
+		// 		elseif (is_callable($callback))
+		// 		{
+		// 			$callback($dc);
+		// 		}
+		// 	}
+		// }
+
+
+        // Check the field access
+		if (!$this->User->hasAccess('tl_page::published', 'alexf'))
+		{
+			throw new AccessDeniedException('Not enough permissions to publish/unpublish page ID ' . $intId . '.');
+		}
+
+		$objRow = $this->Database->prepare("SELECT * FROM tl_athlete_profile WHERE id=?")
+								 ->limit(1)
+								 ->execute($intId);
+
+		if ($objRow->numRows < 1)
+		{
+			throw new AccessDeniedException('Invalid page ID ' . $intId . '.');
+		}
+
+		// Set the current record
+		if ($dc)
+		{
+			$dc->activeRecord = $objRow;
+		}
+
+		$objVersions = new Versions('tl_athlete_profile', $intId);
+		$objVersions->initialize();
+
+		// Trigger the save_callback
+		// if (is_array($GLOBALS['TL_DCA']['tl_athlete_profile']['fields']['published']['save_callback'] ?? null))
+		// {
+		// 	foreach ($GLOBALS['TL_DCA']['tl_athlete_profile']['fields']['published']['save_callback'] as $callback)
+		// 	{
+		// 		if (is_array($callback))
+		// 		{
+		// 			$this->import($callback[0]);
+		// 			$blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, $dc);
+		// 		}
+		// 		elseif (is_callable($callback))
+		// 		{
+		// 			$blnVisible = $callback($blnVisible, $dc);
+		// 		}
+		// 	}
+		// }
+
+		$time = time();
+
+		// Update the database
+		$this->Database->prepare("UPDATE tl_athlete_profile SET tstamp=$time, published='" . ($blnVisible ? '1' : '') . "' WHERE id=?")
+					   ->execute($intId);
+
+		if ($dc)
+		{
+			$dc->activeRecord->tstamp = $time;
+			$dc->activeRecord->published = ($blnVisible ? '1' : '');
+		}
+
+		// Trigger the onsubmit_callback
+		// if (is_array($GLOBALS['TL_DCA']['tl_athlete_profile']['config']['onsubmit_callback'] ?? null))
+		// {
+		// 	foreach ($GLOBALS['TL_DCA']['tl_athlete_profile']['config']['onsubmit_callback'] as $callback)
+		// 	{
+		// 		if (is_array($callback))
+		// 		{
+		// 			$this->import($callback[0]);
+		// 			$this->{$callback[0]}->{$callback[1]}($dc);
+		// 		}
+		// 		elseif (is_callable($callback))
+		// 		{
+		// 			$callback($dc);
+		// 		}
+		// 	}
+		// }
+
+		$objVersions->create();
+
+		if ($dc)
+		{
+			$dc->invalidateCacheTags();
+		}
+	}
+
+
+
+    /**
+	 * Return the "toggle visibility" button
+	 *
+	 * @param array  $row
+	 * @param string $href
+	 * @param string $label
+	 * @param string $title
+	 * @param string $icon
+	 * @param string $attributes
+	 *
+	 * @return string
+	 */
+	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+	{
+		if (Input::get('tid'))
+		{
+			$this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1), (@func_get_arg(12) ?: null));
+			$this->redirect($this->getReferer());
+		}
+
+		// Check permissions AFTER checking the tid, so hacking attempts are logged
+		if (!$this->User->hasAccess('tl_athlete_profile::published', 'alexf'))
+		{
+			return '';
+		}
+
+		$href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
+
+		if (!$row['published'])
+		{
+			$icon = 'invisible.svg';
+		}
+
+		if (!$this->User->hasAccess($row['type'], 'alpty') || (AthleteProfileModel::findById($row['id'])) === null)
+		{
+			return Image::getHtml($icon) . ' ';
+		}
+
+		return '<a href="' . $this->addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label, 'data-state="' . ($row['published'] ? 1 : 0) . '"') . '</a> ';
+	}
 }

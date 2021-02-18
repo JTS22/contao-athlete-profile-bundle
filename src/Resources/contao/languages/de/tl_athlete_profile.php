@@ -19,6 +19,10 @@ $GLOBALS['TL_LANG']['tl_athlete_profile']['copy'] = ["Datensatz mit ID: %s kopie
 $GLOBALS['TL_LANG']['tl_athlete_profile']['delete'] = ["Datensatz mit ID: %s löschen", "Datensatz mit ID: %s löschen"];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['show'] = ["Datensatz mit ID: %s ansehen", "Datensatz mit ID: %s ansehen"];
 
+/**
+ * Palettes
+ */
+$GLOBALS['TL_LANG']['tl_athlete_profile']['profile_legend'] = "Profilinformationen";
 
 /**
  * Fields
