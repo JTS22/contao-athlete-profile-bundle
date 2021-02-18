@@ -30,11 +30,6 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             )
         ),
     ),
-    'edit'        => array(
-        'buttons_callback' => array(
-            array('tl_athlete_profile', 'buttonsCallback')
-        )
-    ),
     'list'        => array(
         'sorting'           => array(
             'mode'        => 2,
@@ -43,8 +38,9 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'panelLayout' => 'filter;sort,search,limit'
         ),
         'label'             => array(
-            'fields' => array('title'),
+            'fields' => array('name', 'year_of_birth', 'trainer'),
             'format' => '%s',
+            'showColumns' => true
         ),
         'global_operations' => array(
             'all' => array(
@@ -108,15 +104,10 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
                             'isSortable'=> true,
                             'extensions'=> Config::get('validImageTypes'),
                             'fieldType'=>'checkbox',
-                            'orderField'=>'pictures_order',
                             'files'=> true,
                             'tl_class' => 'clr'),
             'sql'       => "blob NULL"
         ),
-        'pictures_order' => array(
-			'label'     => &$GLOBALS['TL_LANG']['MSC']['sortOrder'],
-			'sql'       => "blob NULL"
-		),
         'year_of_birth' => array(
             'inputType' => 'text',
             'search'    => true,
@@ -184,18 +175,5 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
  */
 class tl_athlete_profile extends Backend
 {
-    /**
-     * @param $arrButtons
-     * @param  DC_Table $dc
-     * @return mixed
-     */
-    public function buttonsCallback($arrButtons, DC_Table $dc)
-    {
-        if (Input::get('act') === 'edit')
-        {
-            $arrButtons['customButton'] = '<button type="submit" name="customButton" id="customButton" class="tl_submit customButton" accesskey="x">' . $GLOBALS['TL_LANG']['tl_athlete_profile']['customButton'] . '</button>';
-        }
 
-        return $arrButtons;
-    }
 }
