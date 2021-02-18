@@ -13,6 +13,7 @@
 use Contao\Backend;
 use Contao\DC_Table;
 use Contao\Input;
+use Contao\Config;
 
 /**
  * Table tl_athlete_profile
@@ -37,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
     'list'        => array(
         'sorting'           => array(
             'mode'        => 2,
-            'fields'      => array('title'),
+            'fields'      => array('name'),
             'flag'        => 1,
             'panelLayout' => 'filter;sort,search,limit'
         ),
@@ -80,12 +81,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
     ),
     // Palettes
     'palettes'    => array(
-        '__selector__' => array('addSubpalette'),
-        'default'      => '{first_legend},title,selectField,checkboxField,multitextField;{second_legend},addSubpalette'
-    ),
-    // Subpalettes
-    'subpalettes' => array(
-        'addSubpalette' => 'textareaField',
+        'default'      => '{test_legend},name,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
     ),
     // Fields
     'fields'      => array(
@@ -95,68 +91,91 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
         'tstamp'         => array(
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
-        'title'          => array(
+        'name'          => array(
             'inputType' => 'text',
-            'exclude'   => true,
             'search'    => true,
             'filter'    => true,
             'sorting'   => true,
             'flag'      => 1,
             'eval'      => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'),
-            'sql'       => "varchar(255) NOT NULL default ''"
+            'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
         ),
-        'selectField'    => array(
-            'inputType' => 'select',
-            'exclude'   => true,
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
-            'reference' => $GLOBALS['TL_LANG']['tl_athlete_profile'],
-            'options'   => array('firstoption', 'secondoption'),
-            //'foreignKey'            => 'tl_user.name',
-            //'options_callback'      => array('CLASS', 'METHOD'),
-            'eval'      => array('includeBlankOption' => true, 'tl_class' => 'w50'),
-            'sql'       => "varchar(255) NOT NULL default ''",
-            //'relation'  => array('type' => 'hasOne', 'load' => 'lazy')
+        'pictures'          => array(
+            'inputType' => 'fileTree',
+            'eval'      => array(
+                            'mandatory' => true,
+                            'multiple' => true,
+                            'isSortable'=> true,
+                            'extensions'=> Config::get('validImageTypes'),
+                            'fieldType'=>'checkbox',
+                            'orderField'=>'pictures_order',
+                            'files'=> true,
+                            'tl_class' => 'clr'),
+            'sql'       => "blob NULL"
         ),
-        'checkboxField'  => array(
-            'inputType' => 'select',
-            'exclude'   => true,
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
-            'reference' => $GLOBALS['TL_LANG']['tl_athlete_profile'],
-            'options'   => array('firstoption', 'secondoption'),
-            //'foreignKey'            => 'tl_user.name',
-            //'options_callback'      => array('CLASS', 'METHOD'),
-            'eval'      => array('includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'),
-            'sql'       => "varchar(255) NOT NULL default ''",
-            //'relation'  => array('type' => 'hasOne', 'load' => 'lazy')
-        ),
-        'multitextField' => array(
+        'pictures_order' => array(
+			'label'     => &$GLOBALS['TL_LANG']['MSC']['sortOrder'],
+			'sql'       => "blob NULL"
+		),
+        'year_of_birth' => array(
             'inputType' => 'text',
-            'exclude'   => true,
             'search'    => true,
             'filter'    => true,
             'sorting'   => true,
-            'eval'      => array('multiple' => true, 'size' => 4, 'decodeEntities' => true, 'tl_class' => 'w50'),
-            'sql'       => "varchar(255) NOT NULL default ''"
+            'flag'      => 11,
+            'eval'      => array('maxlength' => 4, 'rgxp' => 'natural', 'tl_class' => 'w50'),
+            'sql'       => ['type' => 'string', 'length' => 8, 'default' => '']
         ),
-        'addSubpalette'  => array(
-            'exclude'   => true,
-            'inputType' => 'checkbox',
-            'eval'      => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
-            'sql'       => "char(1) NOT NULL default ''"
+        'favorite_disciplines'          => array(
+            'inputType' => 'text',
+            'eval'      => array('maxlength' => 255, 'tl_class' => 'w50'),
+            'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
         ),
-        'textareaField'  => array(
+        'tlv_entry_date'=> array(
+            'inputType' => 'text',
+            'eval'      => array('maxlength' => 16, 'tl_class' => 'w50'),
+            'sql'       => ['type' => 'string', 'length' => 16, 'default' => '']
+        ),
+        'trainer'       => array(
+            'inputType' => 'text',
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'flag'      => 1,
+            'eval'      => array('maxlength' => 255, 'tl_class' => 'w50'),
+            'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
+        ),
+        'special_tlv_moment'  => array(
             'inputType' => 'textarea',
-            'exclude'   => true,
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
-            'eval'      => array('rte' => 'tinyMCE', 'tl_class' => 'clr'),
+            'eval'      => array('tl_class' => 'clr'),
             'sql'       => 'text NOT NULL'
-        )
+        ),
+        'tlv_appreciation'  => array(
+            'inputType' => 'textarea',
+            'eval'      => array('tl_class' => 'clr'),
+            'sql'       => 'text NOT NULL'
+        ),
+        'biggest_achievement'  => array(
+            'inputType' => 'textarea',
+            'eval'      => array('tl_class' => 'clr'),
+            'sql'       => 'text NOT NULL'
+        ),
+        'other_interests'  => array(
+            'inputType' => 'textarea',
+            'eval'      => array('tl_class' => 'clr'),
+            'sql'       => 'text NOT NULL'
+        ),
+        'goals'  => array(
+            'inputType' => 'textarea',
+            'eval'      => array('tl_class' => 'clr'),
+            'sql'       => 'text NOT NULL'
+        ),
+        'published'     => array(
+			'filter'    => true,
+			'inputType' => 'checkbox',
+			'eval'      => array('doNotCopy'=>true),
+			'sql'       => "char(1) NOT NULL default ''"
+		)
     )
 );
 
