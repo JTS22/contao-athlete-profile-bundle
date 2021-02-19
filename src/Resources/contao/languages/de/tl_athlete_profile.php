@@ -39,3 +39,4 @@ $GLOBALS['TL_LANG']['tl_athlete_profile']['biggest_achievement'] = ["Mein größ
 $GLOBALS['TL_LANG']['tl_athlete_profile']['other_interests'] = ["Neben Leichtathletik interessiere ich mich für"];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['goals'] = ["Meine sportlichen Ziele"];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['published'] = ["Veröffentlicht", "Athletenprofil auf der Seite anzeigen?"];
+

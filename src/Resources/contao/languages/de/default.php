@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['CTE']['athlete_profile_list_element'] = ['Athletenprofil-Li
  * Miscelaneous
  */
 //$GLOBALS['TL_LANG']['MSC'][''] = '';
+$GLOBALS['TL_LANG']['MSC']['no_profiles_msg'] = "Derzeit sind leider keine Athletenprofile verfügbar. Bitte versuchen Sie es später erneut.";
 
 /**
  * Errors

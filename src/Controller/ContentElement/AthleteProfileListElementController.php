@@ -16,7 +16,9 @@ namespace Jts22\ContaoAthleteProfileBundle\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
+use Contao\StringUtil;
 use Contao\Template;
+use Jts22\ContaoAthleteProfileBundle\Model\AthleteProfileModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,8 +32,18 @@ class AthleteProfileListElementController extends AbstractContentElementControll
      */
     protected function getResponse(Template $template, ContentModel $model, Request $request): ?Response
     {
-        $template->text = $model->text;
-        
+
+        $this->addHeadlineToTemplate($template, $model->headline);
+        $all_profiles = AthleteProfileModel::findBy('published', 1)->fetchAll();
+        $template->profiles = array_map(function($profile) {
+            $pictures = StringUtil::deserialize($profile['pictures']);
+            $pictures_hex = array_map(function($binary) {
+                return bin2hex($binary);
+            }, $pictures);
+            $profile['pictures'] = $pictures_hex;
+            $profile['main_image'] = $pictures_hex[0];
+            return $profile;
+        }, $all_profiles);
         return $template->getResponse();
     }
 }
