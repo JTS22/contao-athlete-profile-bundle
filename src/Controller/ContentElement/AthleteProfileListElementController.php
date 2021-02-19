@@ -16,6 +16,7 @@ namespace Jts22\ContaoAthleteProfileBundle\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
+use Contao\FilesModel;
 use Contao\StringUtil;
 use Contao\Template;
 use Jts22\ContaoAthleteProfileBundle\Model\AthleteProfileModel;
@@ -34,14 +35,11 @@ class AthleteProfileListElementController extends AbstractContentElementControll
     {
 
         $this->addHeadlineToTemplate($template, $model->headline);
-        $all_profiles = AthleteProfileModel::findBy('published', 1)->fetchAll();
+        $all_profiles = AthleteProfileModel::findBy('published', 1, array('order' => 'name ASC'))->fetchAll();
         $template->profiles = array_map(function($profile) {
             $pictures = StringUtil::deserialize($profile['pictures']);
-            $pictures_hex = array_map(function($binary) {
-                return bin2hex($binary);
-            }, $pictures);
-            $profile['pictures'] = $pictures_hex;
-            $profile['main_image'] = $pictures_hex[0];
+            $profile['pictures'] = $pictures;
+            $profile['main_image'] = $pictures[0];
             return $profile;
         }, $all_profiles);
         return $template->getResponse();

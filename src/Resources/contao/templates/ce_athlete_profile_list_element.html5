@@ -7,7 +7,7 @@
                 <div class="profile-card-inner">
                     <div class="profile-card-image">
                         <?php dump($profileData); ?>
-                        <?php echo $this->figure($profileData['main_image'], [200, 200, 'proportional']); ?>
+                        <?php echo $this->figure($profileData['main_image'], 2); ?>
                     </div>
                     <p class="profile-card-desc"><?= $profileData['name']?></p>
                 </div>
