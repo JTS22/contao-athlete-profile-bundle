@@ -1,4 +1,9 @@
-<section class="athlete-profiles">
+<section class="athlete-profiles <?= $this->class ?>" <?= $this->cssID ?>>
+<?php if($this->headline): ?>
+    <<?= $this->hl ?>>
+        <?= $this->headline ?>
+    </<?= $this->hl ?>> 
+<?php endif; ?>
 <?php if (count($this->profiles)): ?>
     <div class="layout_full profile-cards">
         <?php $i = -1; ?>
@@ -6,16 +11,34 @@
             <div class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
                 <div class="profile-card-inner">
                     <div class="profile-card-image">
-                        <?php dump($profileData); ?>
-                        <?php echo $this->figure($profileData['main_image'], 2); ?>
+                        <?php echo $this->figure($profileData['main_image'], 2, array(
+                            'options' => array(
+                                'caption_name' => $profileData['name'],
+                                'caption_discipline' => 'Disziplin'
+                                )
+                            ),
+                            'athlete_profile_image'
+                        );
+                        ?>
                     </div>
-                    <p class="profile-card-desc"><?= $profileData['name']?></p>
                 </div>
             </div>
             <div class="item profile-card-expander" style="--picturenumber: <?php echo $i;?>;" iecompatorder="<?php echo $i;?>">
                     <div class="expander">
                         <span class="collapse-button">x</span>
-                        <p>EXPANDED</p>
+                        <div class="expander-inner">
+                            <h2 class="profile-name"><?= $profileData['name'] ?></h2>
+                            <div class="expander-datablocks">
+                                <?php foreach($profileData['data'] as $key => $value): ?>
+                                    <?php if($value): ?>
+                                        <div class="profile-datablock profile-<?=$key?>" style="grid-area: <?=$key?>">
+                                            <p class="profile-datablock-desc profile-<?=$key?>-desc"><?= $profileData['labels'][$key] ?></p>
+                                            <p class="profile-datablock-data profile-<?=$key?>-data"><?= $value ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
             </div>
         <?php endforeach; ?>

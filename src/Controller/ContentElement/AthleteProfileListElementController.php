@@ -40,6 +40,28 @@ class AthleteProfileListElementController extends AbstractContentElementControll
             $pictures = StringUtil::deserialize($profile['pictures']);
             $profile['pictures'] = $pictures;
             $profile['main_image'] = $pictures[0];
+            $profile['data'] = array(
+                'year_of_birth' => $profile['year_of_birth'],
+                'favorite_disciplines' => $profile['favorite_disciplines'],
+                'entry_year' => $profile['tlv_entry_date'],
+                'trainer' => $profile['trainer'],
+                'special_moment' => $profile['special_tlv_moment'],
+                'appreciation' => $profile['tlv_appreciation'],
+                'biggest_success' => $profile['biggest_achievement'],
+                'other_interests' => $profile['other_interests'],
+                'goals' => $profile['goals']
+            );
+            $profile['labels'] = array(
+                'year_of_birth' => "Geburtsjahr:",
+                'favorite_disciplines' => "Lieblingsdisziplinen:",
+                'entry_year' => "Ich bin im TLV seit:",
+                'trainer' => "Trainer/in:",
+                'special_moment' => "Mein ganz besonderer TLV-Moment war:",
+                'appreciation' => "Das schätze ich am TLV besonders:",
+                'biggest_success' => "Mein größter Erfolg ist:",
+                'other_interests' => "Neben Leichtathletik interessierte ich mich noch für:",
+                'goals' => "Meine sportlichen Ziele für die Zukunft sind:"
+            );
             return $profile;
         }, $all_profiles);
         return $template->getResponse();
