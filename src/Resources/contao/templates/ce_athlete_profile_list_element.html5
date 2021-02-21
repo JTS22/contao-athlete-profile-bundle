@@ -11,10 +11,11 @@
             <div class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
                 <div class="profile-card-inner">
                     <div class="profile-card-image">
+                        <?php //The 2 corresponds to the image-size ID! (Magic number?) ?>
                         <?php echo $this->figure($profileData['main_image'], 2, array(
                             'options' => array(
                                 'caption_name' => $profileData['name'],
-                                'caption_discipline' => 'Disziplin'
+                                'caption_discipline' => $profileData['profession']
                                 )
                             ),
                             'athlete_profile_image'
@@ -37,6 +38,16 @@
                                         </div>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
+                                <div class="profile-datablock-image">
+                                    <?php //The 3 corresponds to the image-size ID! (Magic number?) ?>
+                                    <?php if (sizeof($profileData['pictures']) > 1): ?>
+                                        <?php foreach (array_slice($profileData['pictures'], 1) as $picture): ?>
+                                            <?php echo $this->figure($picture, 3); ?>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <?php echo $this->figure($profileData['pictures'][0], 3); ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -28,6 +28,7 @@ $GLOBALS['TL_LANG']['tl_athlete_profile']['profile_legend'] = "Profilinformation
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_athlete_profile']['name'] = ["Name", "Vor- und Nachname des Athleten / der Athletin"];
+$GLOBALS['TL_LANG']['tl_athlete_profile']['profession'] = ["Kurzbeschreibung", "Schlagwort, das unter dem Namen angezeigt wird. 'Sprinter', 'Hochspringer', etc."];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['pictures'] = ["Fotos", "Fotos des Athleten / der Athletin. Das erste gewählte Bild wird in der Übersichtsliste verwendet."];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['year_of_birth'] = ["Geburtsjahr", "Geburtsjahr des Athleten / der Athletin"];
 $GLOBALS['TL_LANG']['tl_athlete_profile']['favorite_disciplines'] = ["Lieblingsdisziplin(en)"];

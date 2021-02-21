@@ -88,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
     ),
     // Palettes
     'palettes'    => array(
-        'default'      => '{profile_legend},name,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
+        'default'      => '{profile_legend},name,profession,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
     ),
     // Fields
     'fields'      => array(
@@ -99,6 +99,15 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'name'          => array(
+            'inputType' => 'text',
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'flag'      => 1,
+            'eval'      => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'),
+            'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
+        ),
+		'profession'    => array(
             'inputType' => 'text',
             'search'    => true,
             'filter'    => true,
