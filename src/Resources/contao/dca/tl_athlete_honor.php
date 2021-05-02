@@ -19,12 +19,12 @@ use Contao\DataContainer;
 use Contao\Versions;
 use Contao\BackendUser;
 use Contao\StringUtil;
-use Jts22\ContaoAthleteProfileBundle\Model\AthleteProfileModel;
+use Jts22\ContaoAthleteProfileBundle\Model\AthleteHonorModel;
 
 /**
  * Table tl_athlete_profile
  */
-$GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
+$GLOBALS['TL_DCA']['tl_athlete_honor'] = array(
 
     // Config
     'config'      => array(
@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'panelLayout' => 'filter;sort,search,limit'
         ),
         'label'             => array(
-            'fields' => array('name', 'year_of_birth', 'trainer'),
+            'fields' => array('name', 'category', 'year'),
             'format' => '%s',
             'showColumns' => true
         ),
@@ -58,17 +58,17 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
         ),
         'operations'        => array(
             'edit'   => array(
-                'label' => &$GLOBALS['TL_LANG']['tl_athlete_profile']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_athlete_honor']['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif'
             ),
             'copy'   => array(
-                'label' => &$GLOBALS['TL_LANG']['tl_athlete_profile']['copy'],
+                'label' => &$GLOBALS['TL_LANG']['tl_athlete_honor']['copy'],
                 'href'  => 'act=copy',
                 'icon'  => 'copy.gif'
             ),
             'delete' => array(
-                'label'      => &$GLOBALS['TL_LANG']['tl_athlete_profile']['delete'],
+                'label'      => &$GLOBALS['TL_LANG']['tl_athlete_honor']['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
@@ -76,10 +76,10 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
 			'toggle' => array(
 				'icon'                => 'visible.svg',
 				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'     => array('tl_athlete_profile', 'toggleIcon')
+				'button_callback'     => array('tl_athlete_honor', 'toggleIcon')
 			),
             'show'   => array(
-                'label'      => &$GLOBALS['TL_LANG']['tl_athlete_profile']['show'],
+                'label'      => &$GLOBALS['TL_LANG']['tl_athlete_honor']['show'],
                 'href'       => 'act=show',
                 'icon'       => 'show.gif',
                 'attributes' => 'style="margin-right:3px"'
@@ -88,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
     ),
     // Palettes
     'palettes'    => array(
-        'default'      => '{profile_legend},name,profession,pictures,year_of_birth,favorite_disciplines,tlv_entry_date,trainer,special_tlv_moment,tlv_appreciation,biggest_achievement,other_interests,goals,published'
+        'default'      => '{profile_legend},name,category,year,picture,text,profile,published'
     ),
     // Fields
     'fields'      => array(
@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'eval'      => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'),
             'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
         ),
-		'profession'    => array(
+		'category'    => array(
             'inputType' => 'text',
             'search'    => true,
             'filter'    => true,
@@ -116,70 +116,36 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
             'eval'      => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'),
             'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
         ),
-        'pictures'          => array(
-            'inputType' => 'fileTree',
-            'eval'      => array(
-                            'mandatory' => true,
-                            'multiple' => true,
-                            'isSortable'=> true,
-                            'extensions'=> Config::get('validImageTypes'),
-                            'fieldType'=>'checkbox',
-                            'files'=> true,
-                            'tl_class' => 'clr'),
-            'sql'       => "blob NULL"
-        ),
-        'year_of_birth' => array(
+        'year' => array(
             'inputType' => 'text',
             'search'    => true,
             'filter'    => true,
             'sorting'   => true,
             'flag'      => 11,
-            'eval'      => array('maxlength' => 4, 'rgxp' => 'natural', 'tl_class' => 'w50'),
+            'eval'      => array('mandatory' => true, 'maxlength' => 4, 'rgxp' => 'natural', 'tl_class' => 'w50'),
             'sql'       => ['type' => 'string', 'length' => 8, 'default' => '']
         ),
-        'favorite_disciplines'          => array(
-            'inputType' => 'text',
-            'eval'      => array('maxlength' => 255, 'tl_class' => 'w50'),
+        'picture'          => array(
+            'inputType' => 'fileTree',
+            'eval'      => array(
+                            'mandatory' => true,
+                            'extensions'=> Config::get('validImageTypes'),
+                            'fieldType'=>'checkbox',
+                            'files'=> true,
+                            'tl_class' => 'w50'),
+            'sql'       => "blob NULL"
+        ),
+        'text' => array(
+            'inputType' => 'textarea',
+            'eval'      => array('rte' => 'tinyMCE', 'tl_class' => 'clr'),
+            'sql'       => "mediumtext NULL"
+        ),
+        'profile'          => array(
+            'inputType' => 'picker',
+            'foreignKey' => 'tl_athlete_profile.id',
+            'relation' => array('type' => 'hasOne', 'table' => 'tl_athlete_profile'),
+            'eval'      => array('tl_class' => 'clr'),
             'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
-        ),
-        'tlv_entry_date'=> array(
-            'inputType' => 'text',
-            'eval'      => array('maxlength' => 16, 'tl_class' => 'w50'),
-            'sql'       => ['type' => 'string', 'length' => 16, 'default' => '']
-        ),
-        'trainer'       => array(
-            'inputType' => 'text',
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
-            'flag'      => 1,
-            'eval'      => array('maxlength' => 255, 'tl_class' => 'w50'),
-            'sql'       => ['type' => 'string', 'length' => 255, 'default' => '']
-        ),
-        'special_tlv_moment'  => array(
-            'inputType' => 'textarea',
-            'eval'      => array('tl_class' => 'clr'),
-            'sql'       => 'text NOT NULL'
-        ),
-        'tlv_appreciation'  => array(
-            'inputType' => 'textarea',
-            'eval'      => array('tl_class' => 'clr'),
-            'sql'       => 'text NOT NULL'
-        ),
-        'biggest_achievement'  => array(
-            'inputType' => 'textarea',
-            'eval'      => array('tl_class' => 'clr'),
-            'sql'       => 'text NOT NULL'
-        ),
-        'other_interests'  => array(
-            'inputType' => 'textarea',
-            'eval'      => array('tl_class' => 'clr'),
-            'sql'       => 'text NOT NULL'
-        ),
-        'goals'  => array(
-            'inputType' => 'textarea',
-            'eval'      => array('tl_class' => 'clr'),
-            'sql'       => 'text NOT NULL'
         ),
         'published'     => array(
             'exclude'   => true,
@@ -192,9 +158,9 @@ $GLOBALS['TL_DCA']['tl_athlete_profile'] = array(
 );
 
 /**
- * Class tl_athlete_profile
+ * Class tl_athlete_honor
  */
-class tl_athlete_profile extends Backend
+class tl_athlete_honor extends Backend
 {
 
     /**
@@ -243,8 +209,7 @@ class tl_athlete_profile extends Backend
 		// 	}
 		// }
 
-
-		$objRow = $this->Database->prepare("SELECT * FROM tl_athlete_profile WHERE id=?")
+		$objRow = $this->Database->prepare("SELECT * FROM tl_athlete_honor WHERE id=?")
 								 ->limit(1)
 								 ->execute($intId);
 
@@ -259,7 +224,7 @@ class tl_athlete_profile extends Backend
 			$dc->activeRecord = $objRow;
 		}
 
-		$objVersions = new Versions('tl_athlete_profile', $intId);
+		$objVersions = new Versions('tl_athlete_honor', $intId);
 		$objVersions->initialize();
 
 		// Trigger the save_callback
@@ -282,7 +247,7 @@ class tl_athlete_profile extends Backend
 		$time = time();
 
 		// Update the database
-		$this->Database->prepare("UPDATE tl_athlete_profile SET tstamp=$time, published='" . ($blnVisible ? '1' : '') . "' WHERE id=?")
+		$this->Database->prepare("UPDATE tl_athlete_honor SET tstamp=$time, published='" . ($blnVisible ? '1' : '') . "' WHERE id=?")
 					   ->execute($intId);
 
 		if ($dc)
@@ -339,7 +304,7 @@ class tl_athlete_profile extends Backend
 		}
 
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
-		if (!$this->User->hasAccess('tl_athlete_profile::published', 'alexf'))
+		if (!$this->User->hasAccess('tl_athlete_honor::published', 'alexf'))
 		{
 			return '';
 		}
@@ -351,7 +316,7 @@ class tl_athlete_profile extends Backend
 			$icon = 'invisible.svg';
 		}
 
-		if (!$this->User->hasAccess($row['type'], 'alpty') || (AthleteProfileModel::findById($row['id'])) === null)
+		if (!$this->User->hasAccess($row['type'], 'alpty') || (AthleteHonorModel::findById($row['id'])) === null)
 		{
 			return Image::getHtml($icon) . ' ';
 		}

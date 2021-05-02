@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Athlete Profile Bundle.
  * 
@@ -10,8 +12,18 @@
  * @link https://github.com/jts22/contao-athlete-profile-bundle
  */
 
+namespace Jts22\ContaoAthleteProfileBundle\Model;
+
+use Contao\Model;
+
 /**
- * Backend modules
+ * Class AthleteHonorModel
+ *
+ * @package Jts22\ContaoAthleteProfileBundle\Model
  */
-$GLOBALS['TL_LANG']['MOD']['athlete_profiles'] = ['Athletenprofile', 'Verwaltung der Athletenprofile'];
-$GLOBALS['TL_LANG']['MOD']['athlete_honor'] = ['Athletenehrungen', 'Verwaltung der Athletenehrungen'];
+class AthleteHonorModel extends Model
+{
+    protected static $strTable = 'tl_athlete_honor';
+
+}
+
