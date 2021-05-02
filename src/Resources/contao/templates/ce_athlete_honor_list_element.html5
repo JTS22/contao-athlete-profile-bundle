@@ -1,0 +1,53 @@
+<section class="athlete-honors <?= $this->class ?>" <?= $this->cssID ?>>
+<?php if($this->headline): ?>
+    <<?= $this->hl ?>>
+        <?= $this->headline ?>
+    </<?= $this->hl ?>> 
+<?php endif; ?>
+<?php if (count($this->profiles)): ?>
+    <div class="layout_full profile-cards">
+        <?php $i = -1; ?>
+        <?php foreach ($this->profiles as $profileData): ?>
+            <div class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
+                <div class="profile-card-inner">
+                    <div class="profile-card-image">
+                        <?php //The 2 corresponds to the image-size ID! (Magic number?) ?>
+                        <?php echo $this->figure($profileData['picture'], 2, array(
+                            'options' => array(
+                                'caption_name' => $profileData['name'],
+                                'caption_discipline' => $profileData['category']
+                                )
+                            ),
+                            'athlete_profile_image'
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="item profile-card-expander" style="--picturenumber: <?php echo $i;?>;" iecompatorder="<?php echo $i;?>">
+                    <div class="expander">
+                        <span class="collapse-button">x</span>
+                        <div class="expander-inner">
+                            <?php if($profileData['text']): ?>
+                                <div class="profile-text">
+                                    <?= $profileData['text'] ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if($profileData['profile']): ?>
+                                <div class="profile-link">
+                                    <a href="{{link_url::<?= $this->athlete_profile_page ?>}}#profile-<?=$profileData['profile']?>">Zum Athletenprofil</a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else : ?>
+    <?php $this->block('noItem'); ?>
+        <p class="info"><?= $this->trans('MSC.no_profiles_msg') ?></p>
+    <?php $this->endblock(); ?>
+<?php endif; ?>
+</section>
+
+<script src="files/assets/js/js_athlete_honors.js"></script>

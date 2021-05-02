@@ -14,6 +14,7 @@
  * Content element
  */
 $GLOBALS['TL_LANG']['CTE']['athlete_profile_list_element'] = ['Athlete profile list', 'List of all profiles'];
+$GLOBALS['TL_LANG']['CTE']['athlete_honor_list_element'] = ['Athlete honor list', 'Liste of athlete honors'];
 
 /**
  * Miscelaneous

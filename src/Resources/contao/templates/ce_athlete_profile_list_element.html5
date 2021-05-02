@@ -8,7 +8,7 @@
     <div class="layout_full profile-cards">
         <?php $i = -1; ?>
         <?php foreach ($this->profiles as $profileData): ?>
-            <div class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
+            <div id="profile-<?= $profileData['id'] ?>" class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
                 <div class="profile-card-inner">
                     <div class="profile-card-image">
                         <?php //The 2 corresponds to the image-size ID! (Magic number?) ?>
