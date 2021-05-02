@@ -130,8 +130,9 @@ $GLOBALS['TL_DCA']['tl_athlete_honor'] = array(
             'eval'      => array(
                             'mandatory' => true,
                             'extensions'=> Config::get('validImageTypes'),
-                            'fieldType'=>'checkbox',
+                            'fieldType'=>'radio',
                             'files'=> true,
+							'multiple' => false,
                             'tl_class' => 'w50'),
             'sql'       => "blob NULL"
         ),

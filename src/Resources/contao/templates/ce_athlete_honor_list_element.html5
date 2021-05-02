@@ -8,8 +8,8 @@
     <div class="layout_full profile-cards">
         <?php $i = -1; ?>
         <?php foreach ($this->profiles as $profileData): ?>
-            <div class="item profile-card is-collapsed" style="order: <?php echo ++$i;?>;">
-                <div class="profile-card-inner">
+            <div class="item profile-card honors-card is-collapsed" style="order: <?php echo ++$i;?>;">
+                <div class="profile-card-inner honors-card-inner">
                     <div class="profile-card-image">
                         <?php //The 2 corresponds to the image-size ID! (Magic number?) ?>
                         <?php echo $this->figure($profileData['picture'], 2, array(
@@ -24,10 +24,10 @@
                     </div>
                 </div>
             </div>
-            <div class="item profile-card-expander" style="--picturenumber: <?php echo $i;?>;" iecompatorder="<?php echo $i;?>">
-                    <div class="expander">
+            <div class="item profile-card-expander honors-card-expander" style="--picturenumber: <?php echo $i;?>;" iecompatorder="<?php echo $i;?>">
+                    <div class="expander honor-expander">
                         <span class="collapse-button">x</span>
-                        <div class="expander-inner">
+                        <div class="expander-inner honor-expander-inner">
                             <?php if($profileData['text']): ?>
                                 <div class="profile-text">
                                     <?= $profileData['text'] ?>
@@ -35,7 +35,9 @@
                             <?php endif; ?>
                             <?php if($profileData['profile']): ?>
                                 <div class="profile-link">
-                                    <a href="{{link_url::<?= $this->athlete_profile_page ?>}}#profile-<?=$profileData['profile']?>">Zum Athletenprofil</a>
+                                    <p>
+                                        <a href="{{link_url::<?= $this->athlete_profile_page ?>}}#profile-<?=$profileData['profile']?>">Zum Athletenprofil</a>
+                                    </p>
                                 </div>
                             <?php endif; ?>
                         </div>
